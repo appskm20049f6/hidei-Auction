@@ -6,6 +6,10 @@ const priceNow = ref(0);
 </script>
 
 <template>
+  <div class="bar">
+    <h1>FF40 | hidei掛軸拍賣 - 開拓動漫祭ww</h1>
+  </div>
+
   <div class="page">
     <div class="example">
       <img src="./assets/example.jpg" alt="" />
@@ -18,11 +22,11 @@ const priceNow = ref(0);
 
       <div class="inputprice">
         <div class="inputtext">
-          <p>Name：</p>
+          <p>姓名：</p>
           <input type="text" />
         </div>
         <div class="inputtext">
-          <p>Phone：</p>
+          <p>電話號碼：</p>
           <input type="text" />
         </div>
         <div class="inputtext">
@@ -36,20 +40,34 @@ const priceNow = ref(0);
 </template>
 
 <style lang="scss" scoped>
+.bar {
+  border: 1px solid;
+  width: 100vw;
+  background-color: #ffffff;
+  color: #101010;
+  h1 {
+    background-color: #ffffff;
+  }
+}
 .page {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 .example {
-  width: 30%;
+  width: 50%;
   img {
     width: 100%;
     border-radius: 15px;
   }
 }
+.pricerow {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .inputprice {
-  width: 20%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -62,7 +80,7 @@ const priceNow = ref(0);
   }
 
   button {
-    width: 30%;
+    width: 100%;
   }
 }
 </style>
