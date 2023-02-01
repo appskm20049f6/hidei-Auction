@@ -8,8 +8,7 @@ const sec = ref(59);
 
 var config = {
   method: "get",
-  url: "https://09a2-36-226-158-219.jp.ngrok.io/",
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  url: "https://sheetdb.io/api/v1/zhq1olshj449h",
 };
 
 axios(config)
