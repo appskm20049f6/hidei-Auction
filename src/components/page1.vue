@@ -262,13 +262,20 @@ let pricepushtop = (e) => {
     }
     p {
       display: flex;
-      width: 40%;
+      width: 30%;
       justify-content: flex-start;
       @media screen and (max-width: 900px) {
+        width: 45%;
+      }
+      @media screen and (max-width: 414px) {
+        width: 35%;
+      }
+      @media screen and (max-width: 360px) {
+        width: 48%;
       }
     }
     input {
-      flex-grow: 1;
+      width: 40%;
     }
   }
 }
