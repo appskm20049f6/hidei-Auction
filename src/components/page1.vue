@@ -9,7 +9,7 @@ const sec = ref(59);
 
 <template>
   <div class="bar">
-    <div><h1>FF40 | hidei掛軸拍賣</h1></div>
+    <div><h1>FF40 | heidi掛軸拍賣</h1></div>
   </div>
   <div class="nav">
     <h2><a href="javascript:alert('目前還沒有喔<3');"> ↩單人掛軸</a></h2>
@@ -32,7 +32,7 @@ const sec = ref(59);
           <p>TWD：500</p>
         </div>
         <div class="pricenow">
-          <p>現場最高競標價：</p>
+          <p>目前最高價：</p>
           <p>TWD：{{ priceNow }}</p>
         </div>
       </div>
@@ -188,7 +188,9 @@ const sec = ref(59);
       justify-content: center;
     }
     p {
-      width: 100px;
+      display: flex;
+      width: 120px;
+      justify-content: flex-end;
       @media screen and (max-width: 900px) {
       }
     }
