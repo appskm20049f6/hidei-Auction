@@ -1,10 +1,24 @@
 <script setup>
 import { h, ref } from "vue";
-
+import axios from "axios";
 const priceNow = ref(500);
 
 const sen = ref(30);
 const sec = ref(59);
+
+var config = {
+  method: "get",
+  url: "https://09a2-36-226-158-219.jp.ngrok.io/",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+};
+
+axios(config)
+  .then(function (res) {
+    console.log(res);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 </script>
 
 <template>
@@ -189,13 +203,13 @@ const sec = ref(59);
     }
     p {
       display: flex;
-      width: 120px;
-      justify-content: flex-end;
+      width: 40%;
+      justify-content: flex-start;
       @media screen and (max-width: 900px) {
       }
     }
     input {
-      flex-grow: 50px;
+      flex-grow: 1;
     }
   }
 }
