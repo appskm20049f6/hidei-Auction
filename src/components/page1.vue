@@ -14,29 +14,29 @@ let post = ref("");
 
 console.log(Today);
 
-const datadata = {
-  time: Today,
-  name: name.value,
-  phone: phone.value,
-  pricepush: pricepush.value,
-};
-
-var config = {
-  method: "post",
-  url: "https://sheetdb.io/api/v1/zhq1olshj449h",
-  data: datadata,
-};
-
 let pricepushtop = (e) => {
+  console.log(`${Today}`, `${pricepush}`, `${name}`, `${phone}`);
   if (pricepush.value > priceNow.value) {
-    if (post == "0205") {
-      axios(config)
-        .then(function (res) {
-          console.log(res);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    if (post.value == "0205") {
+      fetch("https://sheetdb.io/api/v1/zhq1olshj449h", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: [
+            {
+              time: `${Today}`,
+              pricepush: `${pricepush.value}`,
+              name: `${name.value}`,
+              phone: `${phone.value}`,
+            },
+          ],
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
     } else {
       alert("驗證碼輸入錯誤");
     }
