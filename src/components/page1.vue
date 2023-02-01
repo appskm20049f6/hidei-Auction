@@ -1,21 +1,50 @@
 <script setup>
 import { h, ref } from "vue";
 import axios from "axios";
-const priceNow = ref(500);
+
+var config = {
+  method: "get",
+  maxBodyLength: Infinity,
+  url: "https://script.google.com/macros/s/AKfycbx934MrKutaOtSAT9DtmUJp7NkES6cp0D0JfgGu995XwE7v34F6Q1hozGdyOKEAek-WuA/exec",
+};
+
+let priceNow = ref(500);
 const sen = ref(30);
 const sec = ref(59);
-
+let loading = ref(0);
 let Today = new Date();
 let name = ref("");
 let phone = ref("");
 let pricepush = ref(0);
-
 let post = ref("");
 
-console.log(Today);
+axios(config)
+  .then(function (res) {
+    console.log(res.data[res.data.length - 1][1]);
+    priceNow.value = parseInt(res.data[res.data.length - 1][1]);
+    return priceNow.value;
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+let checkPrice = () => {
+  axios(config)
+    .then(function (res) {
+      console.log("更新:" + res.data[res.data.length - 1][1]);
+      priceNow.value = parseInt(res.data[res.data.length - 1][1]);
+      return priceNow.value;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+setInterval(() => {
+  checkPrice();
+}, 30000);
 
 let pricepushtop = (e) => {
-  console.log(`${Today}`, `${pricepush}`, `${name}`, `${phone}`);
   if (pricepush.value > priceNow.value) {
     if (post.value == "0205") {
       fetch("https://sheetdb.io/api/v1/zhq1olshj449h", {
@@ -34,9 +63,10 @@ let pricepushtop = (e) => {
             },
           ],
         }),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+      }).then((res) => {
+        checkPrice();
+        alert("競標出價成功!");
+      });
     } else {
       alert("驗證碼輸入錯誤");
     }
@@ -56,7 +86,7 @@ let pricepushtop = (e) => {
   </div>
   <div class="page">
     <div class="example">
-      <img src="../assets/example2.jpg" alt="" />
+      <img src="../assets/example.jpg" alt="" />
     </div>
 
     <div class="pricerow">
