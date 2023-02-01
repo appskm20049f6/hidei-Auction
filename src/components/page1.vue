@@ -2,22 +2,48 @@
 import { h, ref } from "vue";
 import axios from "axios";
 const priceNow = ref(500);
-
 const sen = ref(30);
 const sec = ref(59);
 
-var config = {
-  method: "get",
-  url: "https://sheetdb.io/api/v1/zhq1olshj449h",
+let Today = new Date();
+let name = ref("");
+let phone = ref("");
+let pricepush = ref(0);
+
+let post = ref("");
+
+console.log(Today);
+
+const datadata = {
+  time: Today,
+  name: name.value,
+  phone: phone.value,
+  pricepush: pricepush.value,
 };
 
-axios(config)
-  .then(function (res) {
-    console.log(res);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+var config = {
+  method: "post",
+  url: "https://sheetdb.io/api/v1/zhq1olshj449h",
+  data: datadata,
+};
+
+let pricepushtop = (e) => {
+  if (pricepush.value > priceNow.value) {
+    if (post == "0205") {
+      axios(config)
+        .then(function (res) {
+          console.log(res);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      alert("驗證碼輸入錯誤");
+    }
+  } else {
+    alert("競標金額低於現在金額哦～");
+  }
+};
 </script>
 
 <template>
@@ -55,22 +81,26 @@ axios(config)
       <div class="inputprice">
         <div class="inputtext">
           <p>真實姓名：</p>
-          <input type="text" />
+          <input v-model="name" type="text" />
         </div>
         <div class="inputtext">
           <p>電話號碼：</p>
-          <input type="text" />
+          <input v-model="phone" type="text" />
         </div>
         <div class="inputtext">
           <p>競標出價：</p>
-          <input type="text" />
+          <input v-model="pricepush" type="text" />
         </div>
         <div class="inputtext">
           <p>驗證碼：</p>
-          <input type="text" placeholder="今天的日期是？A:0205" />
+          <input
+            type="text"
+            v-model="post"
+            placeholder="今天的日期是？A:0205"
+          />
         </div>
       </div>
-      <button>輸入資料參與競標</button>
+      <button @click="pricepushtop()">輸入資料參與競標</button>
     </div>
   </div>
 </template>
