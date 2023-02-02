@@ -15,7 +15,7 @@ let loading = ref(0);
 let Today = new Date();
 let name = ref("");
 let phone = ref("");
-let pricepush = ref(0);
+let pricepush = ref();
 let post = ref("");
 
 axios(config)
@@ -40,12 +40,13 @@ let checkPrice = () => {
     });
 };
 
-setInterval(() => {
-  checkPrice();
-}, 30000);
+// 30秒更新最高價
+// setInterval(() => {
+//   checkPrice();
+// }, 30000);
 
 let pricepushtop = (e) => {
-  if (pricepush.value > priceNow.value) {
+  if (pricepush.value >= priceNow.value + 100) {
     if (post.value == "0205") {
       fetch("https://sheetdb.io/api/v1/zhq1olshj449h", {
         method: "POST",
@@ -71,7 +72,7 @@ let pricepushtop = (e) => {
       alert("驗證碼輸入錯誤");
     }
   } else {
-    alert("競標金額低於現在金額哦～");
+    alert("競標金額要高於最高價100喔！");
   }
 };
 </script>
@@ -86,7 +87,7 @@ let pricepushtop = (e) => {
   </div>
   <div class="page">
     <div class="example">
-      <img src="../assets/example.jpg" alt="" />
+      <img src="../assets/example2.jpg" alt="" />
     </div>
 
     <div class="pricerow">
@@ -115,11 +116,15 @@ let pricepushtop = (e) => {
         </div>
         <div class="inputtext">
           <p>電話號碼：</p>
-          <input v-model="phone" type="text" />
+          <input v-model="phone" type="text" placeholder="不填怎麼聯絡！" />
         </div>
         <div class="inputtext">
           <p>競標出價：</p>
-          <input v-model="pricepush" type="text" />
+          <input
+            v-model="pricepush"
+            type="text"
+            placeholder="每次競標最少+100!"
+          />
         </div>
         <div class="inputtext">
           <p>驗證碼：</p>
