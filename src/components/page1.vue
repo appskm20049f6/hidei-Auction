@@ -76,7 +76,7 @@ let pricepushtop = (e) => {
   }
 };
 
-const endtime = new Date("2023 / 02 / 03 13:24");
+const endtime = new Date("2023 / 02 / 05 15:30");
 let nowTime = new Date();
 
 let overLine = ref((endtime - nowTime) / 1000);
