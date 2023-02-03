@@ -87,7 +87,7 @@ let pricepushtop = (e) => {
   </div>
   <div class="page">
     <div class="example">
-      <img src="../assets/example2.jpg" alt="" />
+      <img src="../assets/example3.jpg" alt="" />
     </div>
 
     <div class="pricerow">
