@@ -46,7 +46,7 @@ let pricepushtop = (e) => {
     alert("已經截止無法投標囉！");
   } else {
     if (pricepush.value >= priceNow.value + 100) {
-      if (post.value == "0205") {
+      if (post.value == "626") {
         fetch("https://sheetdb.io/api/v1/zhq1olshj449h", {
           method: "POST",
           headers: {
@@ -129,11 +129,11 @@ if (overLine.value <= 0) {
     </div>
 
     <div class="pricerow">
-      <h1>單人掛軸</h1>
-      <p>
-        日本展場限量 來場者限定 B1 掛軸 全新 未拆 日本空運直送抵台現貨
-        僅此一張~~ 下單前請先詢問，逕自下單者 賣家將只寄賣場圖片
-      </p>
+      <h1>逸仙(裸圍ver.)75*105大掛軸</h1>
+      <hr />
+      <p>唯一一支，絕無再版！喜歡的話歡迎動動小指頭出價把它帶回家٩(˃̶͈̀௰˂̶͈́)و</p>
+      <p>結標時間到會立刻打電話給得標者喔！姓名請打真實姓名（可以備註暱稱）</p>
+      <p>⚠️驗證碼請直接問拜寧 以防止有人惡意搗蛋亂標⚠️</p>
       <div class="price">
         <div class="priceup">
           <p>起價：</p>
@@ -150,7 +150,7 @@ if (overLine.value <= 0) {
       <div class="inputprice">
         <div class="inputtext">
           <p>真實姓名：</p>
-          <input v-model="name" type="text" />
+          <input v-model="name" type="text" placeholder="暱稱可" />
         </div>
         <div class="inputtext">
           <p>電話號碼：</p>
@@ -166,11 +166,7 @@ if (overLine.value <= 0) {
         </div>
         <div class="inputtext">
           <p>驗證碼：</p>
-          <input
-            type="text"
-            v-model="post"
-            placeholder="今天的日期是？A:0205"
-          />
+          <input type="text" v-model="post" placeholder="驗證碼問拜寧" />
         </div>
       </div>
       <button @click="pricepushtop()">輸入資料參與競標</button>
@@ -261,7 +257,7 @@ if (overLine.value <= 0) {
   }
   h1 {
     @media screen and (max-width: 414px) {
-      font-size: xx-large;
+      font-size: larger;
     }
   }
 }
