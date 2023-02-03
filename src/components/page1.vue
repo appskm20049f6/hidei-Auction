@@ -103,9 +103,6 @@ const timer = setInterval(() => {
     }
   }
   overLine.value = overLine.value - 1;
-
-  console.log(secsec.value);
-  console.log(`${hr.value}+${min.value}+${secsec.value}`);
 }, 1000);
 
 if (overLine.value <= 0) {
