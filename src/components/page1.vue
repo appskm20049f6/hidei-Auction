@@ -7,10 +7,8 @@ var config = {
   maxBodyLength: Infinity,
   url: "https://script.google.com/macros/s/AKfycbx934MrKutaOtSAT9DtmUJp7NkES6cp0D0JfgGu995XwE7v34F6Q1hozGdyOKEAek-WuA/exec",
 };
-
-let priceNow = ref(500);
-const sen = ref(30);
-const sec = ref(59);
+const hightlest = ref("目前最高價：");
+let priceNow = ref("???");
 let loading = ref(0);
 let Today = new Date();
 let name = ref("");
@@ -20,7 +18,6 @@ let post = ref("");
 
 axios(config)
   .then(function (res) {
-    console.log(res.data[res.data.length - 1][1]);
     priceNow.value = parseInt(res.data[res.data.length - 1][1]);
     return priceNow.value;
   })
@@ -31,7 +28,6 @@ axios(config)
 let checkPrice = () => {
   axios(config)
     .then(function (res) {
-      console.log("更新:" + res.data[res.data.length - 1][1]);
       priceNow.value = parseInt(res.data[res.data.length - 1][1]);
       return priceNow.value;
     })
@@ -46,35 +42,80 @@ let checkPrice = () => {
 // }, 30000);
 
 let pricepushtop = (e) => {
-  if (pricepush.value >= priceNow.value + 100) {
-    if (post.value == "0205") {
-      fetch("https://sheetdb.io/api/v1/zhq1olshj449h", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          data: [
-            {
-              time: `${Today}`,
-              pricepush: `${pricepush.value}`,
-              name: `${name.value}`,
-              phone: `${phone.value}`,
-            },
-          ],
-        }),
-      }).then((res) => {
-        checkPrice();
-        alert("競標出價成功!");
-      });
-    } else {
-      alert("驗證碼輸入錯誤");
-    }
+  if (overLine.value <= 0) {
+    alert("已經截止無法投標囉！");
   } else {
-    alert("競標金額要高於最高價100喔！");
+    if (pricepush.value >= priceNow.value + 100) {
+      if (post.value == "0205") {
+        fetch("https://sheetdb.io/api/v1/zhq1olshj449h", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: [
+              {
+                time: `${Today}`,
+                pricepush: `${pricepush.value}`,
+                name: `${name.value}`,
+                phone: `${phone.value}`,
+              },
+            ],
+          }),
+        }).then((res) => {
+          checkPrice();
+          alert("競標出價成功!");
+        });
+      } else {
+        alert("驗證碼輸入錯誤");
+      }
+    } else {
+      alert("競標金額要高於最高價100喔！");
+    }
   }
 };
+
+const endtime = new Date("2023 / 02 / 03 13:24");
+let nowTime = new Date();
+
+let overLine = ref((endtime - nowTime) / 1000);
+
+let hr = ref(parseInt(overLine.value / 60 / 60));
+let min = ref(parseInt((overLine.value / 60) % 60));
+let secsec = ref(parseInt(overLine.value % 60));
+
+const timer = setInterval(() => {
+  secsec.value = secsec.value - 1;
+
+  if (secsec.value == -1) {
+    secsec.value = 59;
+    min.value = min.value - 1;
+    if (min.value == -1) {
+      hr.value = hr.value - 1;
+      if (hr.value < 0) {
+        secsec.value = 0;
+        min.value = 0;
+        hr.value = 0;
+        clearInterval(timer);
+        location.reload();
+      }
+    }
+  }
+  overLine.value = overLine.value - 1;
+
+  console.log(secsec.value);
+  console.log(`${hr.value}+${min.value}+${secsec.value}`);
+}, 1000);
+
+if (overLine.value <= 0) {
+  secsec.value = 0;
+  min.value = 0;
+  hr.value = 0;
+  hightlest.value = "得標價：";
+  alert("競標已經截止囉！");
+  clearInterval(timer);
+}
 </script>
 
 <template>
@@ -98,16 +139,16 @@ let pricepushtop = (e) => {
       </p>
       <div class="price">
         <div class="priceup">
-          <p>起價</p>
+          <p>起價：</p>
           <p>TWD：500</p>
         </div>
         <div class="pricenow">
-          <p>目前最高價：</p>
+          <p>{{ hightlest }}</p>
           <p>TWD：{{ priceNow }}</p>
         </div>
       </div>
       <div class="timeout">
-        <p>結束尚餘：{{ sen }}分鐘{{ sec }}秒</p>
+        <p>結束尚餘：{{ hr }}時{{ min }}分鐘{{ secsec }}秒</p>
       </div>
       <div class="inputprice">
         <div class="inputtext">
