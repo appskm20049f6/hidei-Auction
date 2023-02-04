@@ -1,11 +1,15 @@
 <script setup>
 import { h, ref } from "vue";
 import axios from "axios";
+let apiUrl = ref(
+  "https://script.google.com/macros/s/AKfycby1ep1FadibJhnehmDUyB1kJQv674o3jXLAirKVOttIS6MCiB85vri_GFMZb4X8yq4k7g/exec"
+);
+let ibendo = ref(2);
 
-var config = {
+let config = {
   method: "get",
   maxBodyLength: Infinity,
-  url: "https://script.google.com/macros/s/AKfycbx934MrKutaOtSAT9DtmUJp7NkES6cp0D0JfgGu995XwE7v34F6Q1hozGdyOKEAek-WuA/exec",
+  url: apiUrl.value,
 };
 const hightlest = ref("目前最高價：");
 let priceNow = ref("???");
@@ -15,6 +19,9 @@ let name = ref("");
 let phone = ref("");
 let pricepush = ref();
 let post = ref("");
+let password = ref("6666");
+
+let posturl = ref("https://sheetdb.io/api/v1/awe21k20cg0b8");
 
 axios(config)
   .then(function (res) {
@@ -29,11 +36,45 @@ let checkPrice = () => {
   axios(config)
     .then(function (res) {
       priceNow.value = parseInt(res.data[res.data.length - 1][1]);
+      console.log(priceNow.value);
       return priceNow.value;
     })
     .catch(function (error) {
       console.log(error);
     });
+};
+
+let change = (e) => {
+  if (e == 1) {
+    priceNow.value = "???";
+    posturl.value = "https://sheetdb.io/api/v1/zhq1olshj449h";
+    apiUrl.value =
+      "https://script.google.com/macros/s/AKfycbx934MrKutaOtSAT9DtmUJp7NkES6cp0D0JfgGu995XwE7v34F6Q1hozGdyOKEAek-WuA/exec";
+    ibendo.value = 1;
+    config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: apiUrl.value,
+    };
+    checkPrice();
+    password.value = "626";
+  } else if (e == 2) {
+    priceNow.value = "???";
+    posturl.value = "https://sheetdb.io/api/v1/awe21k20cg0b8";
+    apiUrl.value =
+      "https://script.google.com/macros/s/AKfycby1ep1FadibJhnehmDUyB1kJQv674o3jXLAirKVOttIS6MCiB85vri_GFMZb4X8yq4k7g/exec";
+    ibendo.value = 2;
+    config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: apiUrl.value,
+    };
+    checkPrice();
+    password.value = "6666";
+  } else {
+    alert("不可以偷窺喔");
+  }
+  console.log(apiUrl.value);
 };
 
 // 30秒更新最高價
@@ -46,8 +87,8 @@ let pricepushtop = (e) => {
     alert("已經截止無法投標囉！");
   } else {
     if (pricepush.value >= priceNow.value + 100) {
-      if (post.value == "626") {
-        fetch("https://sheetdb.io/api/v1/zhq1olshj449h", {
+      if (post.value == password.value) {
+        fetch(`${posturl.value}`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -117,23 +158,73 @@ if (overLine.value <= 0) {
 
 <template>
   <div class="bar">
-    <div><h1>FF40 | heidi掛軸拍賣</h1></div>
+    <div><h1>FF40 | HIDEIxTUEI掛軸拍賣</h1></div>
   </div>
   <div class="nav">
-    <h2><a href="javascript:alert('目前還沒有喔<3');"> ↩單人掛軸</a></h2>
-    <h2><a href="javascript:alert('目前還沒有喔<3');"> 雙人掛軸↪</a></h2>
+    <h2>
+      <a @click="change(1)"> ↩逸仙(裸圍ver.)大掛軸</a>
+    </h2>
+    <h2>
+      <a @click="change(2)"> 夏語遙x浠Mizuki雙人大掛軸↪</a>
+    </h2>
   </div>
   <div class="page">
-    <div class="example">
-      <img src="../assets/example3.jpg" alt="" />
+    <div class="example" v-if="ibendo == 1">
+      <img src="../assets/example.jpg" alt="" />
+    </div>
+    <div class="example" v-if="ibendo == 2">
+      <img src="../assets/example2.jpg" alt="" />
     </div>
 
-    <div class="pricerow">
+    <div class="pricerow" v-if="ibendo == 1">
       <h1>逸仙(裸圍ver.)75*105大掛軸</h1>
       <hr />
       <p>唯一一支，絕無再版！喜歡的話歡迎動動小指頭出價把它帶回家٩(˃̶͈̀௰˂̶͈́)و</p>
       <p>結標時間到會立刻打電話給得標者喔！姓名請打真實姓名（可以備註暱稱）</p>
       <p>⚠️驗證碼請直接問拜寧 以防止有人惡意搗蛋亂標⚠️</p>
+      <div class="price">
+        <div class="priceup">
+          <p>起價：</p>
+          <p>TWD：500</p>
+        </div>
+        <div class="pricenow">
+          <p>{{ hightlest }}</p>
+          <p>TWD：{{ priceNow }}</p>
+        </div>
+      </div>
+      <div class="timeout">
+        <p>結束尚餘：{{ hr }}時{{ min }}分鐘{{ secsec }}秒</p>
+      </div>
+      <div class="inputprice">
+        <div class="inputtext">
+          <p>真實姓名：</p>
+          <input v-model="name" type="text" placeholder="暱稱可" />
+        </div>
+        <div class="inputtext">
+          <p>電話號碼：</p>
+          <input v-model="phone" type="text" placeholder="不填怎麼聯絡！" />
+        </div>
+        <div class="inputtext">
+          <p>競標出價：</p>
+          <input
+            v-model="pricepush"
+            type="text"
+            placeholder="每次競標最少+100!"
+          />
+        </div>
+        <div class="inputtext">
+          <p>驗證碼：</p>
+          <input type="text" v-model="post" placeholder="驗證碼問拜寧" />
+        </div>
+      </div>
+      <button @click="pricepushtop()">輸入資料參與競標</button>
+    </div>
+    <div class="pricerow" v-if="ibendo == 2">
+      <h1>夏語遙x浠Mizuki(旗袍ver.)雙人大掛軸</h1>
+      <hr />
+      <p>首次釋出的腿拜雙人掛軸~左擁右抱很棒的對吧(X</p>
+      <p>結標時間到會立刻打電話給得標者喔！姓名請打真實姓名（可以備註暱稱）</p>
+      <p>⚠️驗證碼請直接問拜寧或腿子 以防止有人惡意搗蛋亂標⚠️</p>
       <div class="price">
         <div class="priceup">
           <p>起價：</p>
@@ -201,6 +292,10 @@ if (overLine.value <= 0) {
     margin-left: 2%;
     margin-right: 2%;
     color: rgba(86, 63, 46, 1);
+    font-size: 18px;
+    @media screen and (max-width: 414px) {
+      font-size: 13px;
+    }
     a {
       color: rgba(86, 63, 46, 1);
     }
@@ -256,8 +351,17 @@ if (overLine.value <= 0) {
     background-color: #563f2e;
   }
   h1 {
+    font-size: 35px;
+    @media screen and (max-width: 1366px) {
+      font-size: 35px;
+    }
     @media screen and (max-width: 414px) {
-      font-size: larger;
+      font-size: 16px;
+    }
+  }
+  p {
+    @media screen and (max-width: 414px) {
+      font-size: 14px;
     }
   }
 }
